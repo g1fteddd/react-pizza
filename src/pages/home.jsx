@@ -19,15 +19,15 @@ const Home = () => {
 
     const [sortType, setSortType] = useState({
         name: "популярности",
-        sort: "rating"
+        sort: "rating",
+        order: "desc"
     });
-    const [orderSort, setOrderSort] = useState("desc");
 
     useEffect(() => {
         setIsLoading(true);
 
         const categoryQuery = categoryId === 0 ? "" : `category=${categoryId}`;
-        const sortByWithOrderQury = `sortBy=${sortType.sort}&order=${orderSort}`;
+        const sortByWithOrderQury = `sortBy=${sortType.sort}&order=${sortType.order}`;
         const searchQuery = searchValue ? `title=${searchValue}` : "";
 
         fetch(
@@ -42,7 +42,7 @@ const Home = () => {
                 setIsLoading(false);
             });
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, orderSort, searchValue]);
+    }, [categoryId, sortType, searchValue]);
 
     const handleChangeCategory = (id) => {
         dispatch(changeCategoryId(id));
@@ -59,16 +59,7 @@ const Home = () => {
                         value={categoryId}
                         onChangeCategory={handleChangeCategory}
                     />
-                    <Sort
-                        value={sortType}
-                        orderSort={orderSort}
-                        onChangeSort={handleChangeSort}
-                        onChangeOrder={() =>
-                            setOrderSort((prevState) =>
-                                prevState === "asc" ? "desc" : "asc"
-                            )
-                        }
-                    />
+                    <Sort value={sortType} onChangeSort={handleChangeSort} />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
