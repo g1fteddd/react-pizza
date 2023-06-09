@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import LogoSvg from "../assets/img/pizza-logo.svg";
 import { Link } from "react-router-dom";
+import TextField from "./textField";
+import { SearchContext } from "../App";
 
 function Header() {
+    const { searchValue, setSearchValue } = useContext(SearchContext);
     return (
         <div className="header">
             <div className="container">
@@ -15,7 +18,13 @@ function Header() {
                         </div>
                     </div>
                 </Link>
-
+                <TextField
+                    name="search"
+                    placeholder="Поиск пиццы..."
+                    type="text"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                />
                 <div className="header__cart">
                     <Link to="/cart" className="button button--cart">
                         <span>520 ₽</span>

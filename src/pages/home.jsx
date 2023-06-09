@@ -1,27 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
+import { SearchContext } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCategoryId } from "../redux/slices/categorySlice";
 
 const Home = () => {
+    const { searchValue } = useContext(SearchContext);
+
     const [pizzas, setPizzas] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
+    const categoryId = useSelector((state) => state.category.categoryId);
+    const dispatch = useDispatch();
+
+    const [sortType, setSortType] = useState({
+        name: "популярности",
+        sort: "rating"
+    });
+    const [orderSort, setOrderSort] = useState("desc");
+
     useEffect(() => {
-        fetch("https://647c75c8c0bae2880ad0b72c.mockapi.io/items")
+        setIsLoading(true);
+
+        const categoryQuery = categoryId === 0 ? "" : `category=${categoryId}`;
+        const sortByWithOrderQury = `sortBy=${sortType.sort}&order=${orderSort}`;
+        const searchQuery = searchValue ? `title=${searchValue}` : "";
+
+        fetch(
+            `https://647c75c8c0bae2880ad0b72c.mockapi.io/items?${searchQuery}&${categoryQuery}&${sortByWithOrderQury}`
+        )
             .then((res) => res.json())
-            .then((data) => setPizzas(data))
+            .then((data) => {
+                setPizzas(data);
+            })
             .catch((err) => console.log(err))
-            .finally(() => setIsLoading(false));
+            .finally(() => {
+                setIsLoading(false);
+            });
         window.scrollTo(0, 0);
-    }, []);
+    }, [categoryId, sortType, orderSort, searchValue]);
+
+    const handleChangeCategory = (id) => {
+        dispatch(changeCategoryId(id));
+    };
+
+    const handleChangeSort = (type) => {
+        setSortType(type);
+    };
     return (
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories />
-                    <Sort />
+                    <Categories
+                        value={categoryId}
+                        onChangeCategory={handleChangeCategory}
+                    />
+                    <Sort
+                        value={sortType}
+                        orderSort={orderSort}
+                        onChangeSort={handleChangeSort}
+                        onChangeOrder={() =>
+                            setOrderSort((prevState) =>
+                                prevState === "asc" ? "desc" : "asc"
+                            )
+                        }
+                    />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
