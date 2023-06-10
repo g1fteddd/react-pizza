@@ -1,13 +1,18 @@
 import React from "react";
-import LogoSvg from "../assets/img/pizza-logo.svg";
 import { Link } from "react-router-dom";
-import TextField from "./textField";
 import { useDispatch, useSelector } from "react-redux";
+
 import { setSearchValue } from "../redux/slices/searchSlice";
+
+import TextField from "./textField";
+
+import LogoSvg from "../assets/img/pizza-logo.svg";
 
 function Header() {
     const dispatch = useDispatch();
+
     const searchValue = useSelector((state) => state.search.searchValue);
+
     return (
         <div className="header">
             <div className="container">

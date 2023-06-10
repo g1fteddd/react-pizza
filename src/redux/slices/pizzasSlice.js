@@ -4,7 +4,7 @@ const initialState = {
     pizzas: []
 };
 
-export const pizzasSlice = createSlice({
+const pizzasSlice = createSlice({
     name: "pizzas",
     initialState,
     reducers: {

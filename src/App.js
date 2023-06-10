@@ -1,11 +1,13 @@
 import React from "react";
-
-import "./scss/app.scss";
-import Header from "./components/header";
-import Home from "./pages/home";
 import { Route, Routes, Navigate } from "react-router-dom";
+
+import Home from "./pages/home";
 import Cart from "./pages/cart";
 import NotFound from "./pages/notFound";
+
+import Header from "./components/header";
+
+import "./scss/app.scss";
 
 function App() {
     return (

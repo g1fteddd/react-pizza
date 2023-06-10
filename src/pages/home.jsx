@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setPizzas } from "../redux/slices/pizzasSlice";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
-import { useDispatch, useSelector } from "react-redux";
-import { setCategoryId } from "../redux/slices/categorySlice";
-import { setSortType } from "../redux/slices/sortSlice";
-import { setPizzas } from "../redux/slices/pizzasSlice";
 
 const Home = () => {
-    const pizzas = useSelector((state) => state.pizzas.pizzas);
-    const categoryId = useSelector((state) => state.category.categoryId);
-    const sortType = useSelector((state) => state.sort.sortType);
-    const searchValue = useSelector((state) => state.search.searchValue);
     const dispatch = useDispatch();
+
+    const pizzas = useSelector((state) => state.pizzas.pizzas);
+    const { categoryId, sort } = useSelector((state) => state.filter);
+    const searchValue = useSelector((state) => state.search.searchValue);
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setIsLoading(true);
-
         const categoryQuery = categoryId === 0 ? "" : `category=${categoryId}`;
-        const sortByWithOrderQury = `sortBy=${sortType.sort}&order=${sortType.order}`;
+        const sortByWithOrderQury = `sortBy=${sort.property}&order=${sort.order}`;
         const searchQuery = searchValue ? `title=${searchValue}` : "";
 
         fetch(
@@ -36,24 +34,14 @@ const Home = () => {
                 setIsLoading(false);
             });
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, searchValue, dispatch]);
+    }, [categoryId, sort, searchValue, dispatch]);
 
-    const handleChangeCategory = (id) => {
-        dispatch(setCategoryId(id));
-    };
-
-    const handleChangeSort = (type) => {
-        dispatch(setSortType(type));
-    };
     return (
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories
-                        value={categoryId}
-                        onChangeCategory={handleChangeCategory}
-                    />
-                    <Sort value={sortType} onChangeSort={handleChangeSort} />
+                    <Categories />
+                    <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
@@ -67,7 +55,6 @@ const Home = () => {
                     ) : (
                         pizzas.map((obj) => (
                             <PizzaBlock key={obj.id} {...obj} />
-                            // <PizzaBlockSkeleton />
                         ))
                     )}
                 </div>

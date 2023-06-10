@@ -1,31 +1,40 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-function Sort({ value, onChangeSort }) {
+import { setSort } from "../redux/slices/filterSlice";
+
+function Sort() {
+    const dispatch = useDispatch();
+
     const typeSorts = [
-        { name: "популярности", sort: "rating" },
-        { name: "цене", sort: "price" },
-        { name: "алфавиту", sort: "title" }
+        { name: "популярности", property: "rating" },
+        { name: "цене", property: "price" },
+        { name: "алфавиту", property: "title" }
     ];
+
+    const sort = useSelector((state) => state.filter.sort);
 
     const [open, setOpen] = useState(false);
 
     const handleClickOrder = () => {
-        onChangeSort({
-            ...value,
-            order: value.order === "asc" ? "desc" : "asc"
-        });
+        dispatch(
+            setSort({
+                ...sort,
+                order: sort.order === "asc" ? "desc" : "asc"
+            })
+        );
     };
 
     const handleClickSort = (sort) => {
         setOpen(false);
-        onChangeSort({ ...sort, order: "desc" });
+        dispatch(setSort({ ...sort, order: "desc" }));
     };
 
     return (
         <div className="sort">
             <div className="sort__label">
                 <svg
-                    transform={value.order === "asc" ? "rotate(-180 0 0)" : ""}
+                    transform={sort.order === "asc" ? "rotate(-180 0 0)" : ""}
                     width="10"
                     height="6"
                     viewBox="0 0 10 6"
@@ -39,20 +48,22 @@ function Sort({ value, onChangeSort }) {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setOpen(!open)}>{value.name}</span>
+                <span onClick={() => setOpen(!open)}>{sort.name}</span>
             </div>
             {open && (
                 <div className="sort__popup">
                     <ul>
-                        {typeSorts.map((sort, index) => (
+                        {typeSorts.map((typeSort, index) => (
                             <li
                                 key={index}
-                                onClick={() => handleClickSort(sort)}
+                                onClick={() => handleClickSort(typeSort)}
                                 className={
-                                    value.sort === sort.sort ? "active" : ""
+                                    sort.property === typeSort.property
+                                        ? "active"
+                                        : ""
                                 }
                             >
-                                {sort.name}
+                                {typeSort.name}
                             </li>
                         ))}
                     </ul>
