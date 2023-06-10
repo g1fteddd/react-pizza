@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import LogoSvg from "../assets/img/pizza-logo.svg";
 import { Link } from "react-router-dom";
 import TextField from "./textField";
-import { SearchContext } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchValue } from "../redux/slices/searchSlice";
 
 function Header() {
-    const { searchValue, setSearchValue } = useContext(SearchContext);
+    const dispatch = useDispatch();
+    const searchValue = useSelector((state) => state.search.searchValue);
     return (
         <div className="header">
             <div className="container">
@@ -23,7 +25,7 @@ function Header() {
                     placeholder="Поиск пиццы..."
                     type="text"
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={(e) => dispatch(setSearchValue(e.target.value))}
                 />
                 <div className="header__cart">
                     <Link to="/cart" className="button button--cart">

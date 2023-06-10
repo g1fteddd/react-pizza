@@ -1,27 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
-import { SearchContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategoryId } from "../redux/slices/categorySlice";
+import { setCategoryId } from "../redux/slices/categorySlice";
+import { setSortType } from "../redux/slices/sortSlice";
+import { setPizzas } from "../redux/slices/pizzasSlice";
 
 const Home = () => {
-    const { searchValue } = useContext(SearchContext);
-
-    const [pizzas, setPizzas] = useState([]);
-
-    const [isLoading, setIsLoading] = useState(true);
-
+    const pizzas = useSelector((state) => state.pizzas.pizzas);
     const categoryId = useSelector((state) => state.category.categoryId);
+    const sortType = useSelector((state) => state.sort.sortType);
+    const searchValue = useSelector((state) => state.search.searchValue);
     const dispatch = useDispatch();
 
-    const [sortType, setSortType] = useState({
-        name: "популярности",
-        sort: "rating",
-        order: "desc"
-    });
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setIsLoading(true);
@@ -35,21 +29,21 @@ const Home = () => {
         )
             .then((res) => res.json())
             .then((data) => {
-                setPizzas(data);
+                dispatch(setPizzas(data));
             })
             .catch((err) => console.log(err))
             .finally(() => {
                 setIsLoading(false);
             });
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, searchValue]);
+    }, [categoryId, sortType, searchValue, dispatch]);
 
     const handleChangeCategory = (id) => {
-        dispatch(changeCategoryId(id));
+        dispatch(setCategoryId(id));
     };
 
     const handleChangeSort = (type) => {
-        setSortType(type);
+        dispatch(setSortType(type));
     };
     return (
         <>
