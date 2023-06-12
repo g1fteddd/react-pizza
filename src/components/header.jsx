@@ -1,17 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import debounce from "lodash.debounce";
 
 import { setSearchValue } from "../redux/slices/searchSlice";
 
 import TextField from "./textField";
 
 import LogoSvg from "../assets/img/pizza-logo.svg";
+import { useState } from "react";
+import { useCallback } from "react";
 
 function Header() {
+    const [value, setValue] = useState("");
     const dispatch = useDispatch();
+    const { pizzas, totalCount, totalPrice } = useSelector(
+        (state) => state.cart
+    );
 
-    const searchValue = useSelector((state) => state.search.searchValue);
+    const updateSearchValue = useCallback(
+        debounce((str) => {
+            dispatch(setSearchValue(str));
+        }, 400),
+        []
+    );
+
+    const handleChangeInput = (e) => {
+        setValue(e.target.value);
+        updateSearchValue(e.target.value);
+    };
 
     return (
         <div className="header">
@@ -25,16 +42,18 @@ function Header() {
                         </div>
                     </div>
                 </Link>
+
                 <TextField
                     name="search"
                     placeholder="Поиск пиццы..."
                     type="text"
-                    value={searchValue}
-                    onChange={(e) => dispatch(setSearchValue(e.target.value))}
+                    value={value}
+                    onChange={handleChangeInput}
                 />
+
                 <div className="header__cart">
                     <Link to="/cart" className="button button--cart">
-                        <span>520 ₽</span>
+                        <span>{totalPrice} ₽</span>
                         <div className="button__delimiter"></div>
                         <svg
                             width="18"
@@ -65,7 +84,7 @@ function Header() {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span>3</span>
+                        <span>{totalCount}</span>
                     </Link>
                 </div>
             </div>

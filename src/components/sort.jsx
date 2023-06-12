@@ -2,19 +2,22 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setSort } from "../redux/slices/filterSlice";
+import { useRef } from "react";
+import { useEffect } from "react";
+
+export const typeSorts = [
+    { name: "популярности", property: "rating" },
+    { name: "цене", property: "price" },
+    { name: "алфавиту", property: "title" }
+];
 
 function Sort() {
     const dispatch = useDispatch();
 
-    const typeSorts = [
-        { name: "популярности", property: "rating" },
-        { name: "цене", property: "price" },
-        { name: "алфавиту", property: "title" }
-    ];
-
     const sort = useSelector((state) => state.filter.sort);
 
     const [open, setOpen] = useState(false);
+    const sortRef = useRef();
 
     const handleClickOrder = () => {
         dispatch(
@@ -30,8 +33,20 @@ function Sort() {
         dispatch(setSort({ ...sort, order: "desc" }));
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.composedPath().includes(sortRef.current)) {
+                setOpen(false);
+            }
+        };
+        document.body.addEventListener("click", handleClickOutside);
+
+        return () =>
+            document.body.removeEventListener("click", handleClickOutside);
+    }, []);
+
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
             <div className="sort__label">
                 <svg
                     transform={sort.order === "asc" ? "rotate(-180 0 0)" : ""}

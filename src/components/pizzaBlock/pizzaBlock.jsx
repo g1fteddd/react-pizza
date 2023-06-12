@@ -1,9 +1,30 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPizza } from "../../redux/slices/cartSlice";
 
-function PizzaBlock({ title, price, imageUrl, sizes, types }) {
-    const typeNames = ["тонкое", "традиционное"];
+export const typeNames = ["тонкое", "традиционное"];
+
+function PizzaBlock({ id, title, price, imageUrl, sizes, types }) {
     const [selectedType, setSelectedType] = useState(types[0]);
     const [selectedSize, setSelectedSize] = useState(0);
+    const dispatch = useDispatch();
+    const pizzaItem = useSelector((state) =>
+        state.cart.pizzas.find((obj) => obj.id === id)
+    );
+    const pizzaCount = pizzaItem ? pizzaItem.count : 0;
+    const addCartPizza = () => {
+        dispatch(
+            addPizza({
+                id,
+                title,
+                price,
+                imageUrl,
+                size: sizes[selectedSize],
+                type: selectedType
+            })
+        );
+    };
+
     return (
         <div className="pizza-block">
             <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
@@ -34,7 +55,10 @@ function PizzaBlock({ title, price, imageUrl, sizes, types }) {
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
-                <button className="button button--outline button--add">
+                <button
+                    onClick={addCartPizza}
+                    className="button button--outline button--add"
+                >
                     <svg
                         width="12"
                         height="12"
@@ -48,7 +72,7 @@ function PizzaBlock({ title, price, imageUrl, sizes, types }) {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
+                    {pizzaCount > 0 && <i>{pizzaCount}</i>}
                 </button>
             </div>
         </div>
