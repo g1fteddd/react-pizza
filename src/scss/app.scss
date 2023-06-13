@@ -19,6 +19,30 @@ body {
 .content {
     padding: 40px 0;
 
+    &__error-info {
+        margin: 100px auto;
+        width: 580px;
+        text-align: center;
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px 0 14px;
+            width: 230px;
+            margin: 20px auto;
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
+
     &__title {
         font-weight: 800;
         font-size: 38px;

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
-import { setPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzas } from "../redux/slices/pizzasSlice";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
@@ -17,28 +16,22 @@ const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const pizzas = useSelector((state) => state.pizzas.pizzas);
+    const { pizzas, status } = useSelector((state) => state.pizzas);
     const { categoryId, sort } = useSelector((state) => state.filter);
     const searchValue = useSelector((state) => state.search.searchValue);
 
-    const [isLoading, setIsLoading] = useState(true);
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
     // Запрос пицц
-    const fetchPizzas = () => {
-        setIsLoading(true);
+    const getPizzas = async () => {
         const categoryQuery = categoryId === 0 ? "" : `category=${categoryId}`;
         const sortByWithOrderQury = `sortBy=${sort.property}&order=${sort.order}`;
         const searchQuery = searchValue ? `title=${searchValue}` : "";
 
-        axios
-            .get(
-                `https://647c75c8c0bae2880ad0b72c.mockapi.io/items?${searchQuery}&${categoryQuery}&${sortByWithOrderQury}`
-            )
-            .then((res) => dispatch(setPizzas(res.data)))
-            .catch((err) => console.log(err))
-            .finally(() => setIsLoading(false));
+        dispatch(
+            fetchPizzas({ categoryQuery, sortByWithOrderQury, searchQuery })
+        );
     };
 
     // Если изменили параметры и был первый рендер, то в search params вшиваем фильтры
@@ -75,7 +68,7 @@ const Home = () => {
     // При изменении фильтров по новой запрашиваем пиццы
     useEffect(() => {
         if (!isSearch.current) {
-            fetchPizzas();
+            getPizzas();
         }
 
         isSearch.current = false;
@@ -91,20 +84,39 @@ const Home = () => {
                     <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
-                <div className="content__items">
-                    {isLoading ? (
-                        <>
-                            <PizzaBlockSkeleton />
-                            <PizzaBlockSkeleton />
-                            <PizzaBlockSkeleton />
-                            <PizzaBlockSkeleton />
-                        </>
-                    ) : (
-                        pizzas.map((obj) => (
-                            <PizzaBlock key={obj.id} {...obj} />
-                        ))
-                    )}
-                </div>
+                {status === "error" ? (
+                    <div className="content__error-info">
+                        <h2>
+                            Произошла ошибка <icon>😕</icon>
+                        </h2>
+                        <p>
+                            К сожалению, не удалось получить пиццы.
+                            <br />
+                            Обновите страницу или попробуйте позже
+                        </p>
+                        <button
+                            onClick={() => navigate(0)}
+                            class="button button--black"
+                        >
+                            <span>Обновить страницу</span>
+                        </button>
+                    </div>
+                ) : (
+                    <div className="content__items">
+                        {status === "loading" ? (
+                            <>
+                                <PizzaBlockSkeleton />
+                                <PizzaBlockSkeleton />
+                                <PizzaBlockSkeleton />
+                                <PizzaBlockSkeleton />
+                            </>
+                        ) : (
+                            pizzas.map((obj) => (
+                                <PizzaBlock key={obj.id} {...obj} />
+                            ))
+                        )}
+                    </div>
+                )}
             </div>
         </>
     );
