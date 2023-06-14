@@ -50,6 +50,8 @@ const cartlSlice = createSlice({
     }
 });
 
+export const cartSelector = (state) => state.cart;
+
 export const { addPizza, clearPizzas, removePizza, deletePizza } =
     cartlSlice.actions;
 

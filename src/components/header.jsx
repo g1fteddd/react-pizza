@@ -10,13 +10,12 @@ import TextField from "./textField";
 import LogoSvg from "../assets/img/pizza-logo.svg";
 import { useState } from "react";
 import { useCallback } from "react";
+import { cartSelector } from "../redux/slices/cartSlice";
 
 function Header() {
     const [value, setValue] = useState("");
     const dispatch = useDispatch();
-    const { pizzas, totalCount, totalPrice } = useSelector(
-        (state) => state.cart
-    );
+    const { totalCount, totalPrice } = useSelector(cartSelector);
 
     const updateSearchValue = useCallback(
         debounce((str) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setCategoryId } from "../redux/slices/filterSlice";
+import { filterSelector, setCategoryId } from "../redux/slices/filterSlice";
 
 function Categories() {
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ function Categories() {
         "Закрытые"
     ];
 
-    const categoryId = useSelector((state) => state.filter.categoryId);
+    const { categoryId } = useSelector(filterSelector);
 
     return (
         <div className="categories">

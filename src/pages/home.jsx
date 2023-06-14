@@ -3,22 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
-import { fetchPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzas, pizzasSelector } from "../redux/slices/pizzasSlice";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
-import { setFilters } from "../redux/slices/filterSlice";
+import { filterSelector, setFilters } from "../redux/slices/filterSlice";
 
 import { typeSorts } from "../components/sort";
+import { searchSelector } from "../redux/slices/searchSlice";
 
 const Home = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { pizzas, status } = useSelector((state) => state.pizzas);
-    const { categoryId, sort } = useSelector((state) => state.filter);
-    const searchValue = useSelector((state) => state.search.searchValue);
+    const { pizzas, status } = useSelector(pizzasSelector);
+    const { categoryId, sort } = useSelector(filterSelector);
+    const { searchValue } = useSelector(searchSelector);
 
     const isSearch = useRef(false);
     const isMounted = useRef(false);
