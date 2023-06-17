@@ -7,7 +7,25 @@ import {
     removePizza
 } from "../../redux/slices/cartSlice";
 
-const CartPizzaBlock = ({ id, title, price, imageUrl, size, type, count }) => {
+interface ICartPizzaBlock {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    size: number;
+    type: number;
+    count: number;
+}
+
+const CartPizzaBlock: React.FC<ICartPizzaBlock> = ({
+    id,
+    title,
+    price,
+    imageUrl,
+    size,
+    type,
+    count
+}) => {
     const dispatch = useDispatch();
 
     const handleClickPlus = () => {

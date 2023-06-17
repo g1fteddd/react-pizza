@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 
 import Home from "./pages/home";
@@ -8,6 +7,7 @@ import NotFound from "./pages/notFound";
 import Header from "./components/header";
 
 import "./scss/app.scss";
+import PizzaInfo from "./pages/pizzaInfo";
 
 function App() {
     return (
@@ -17,6 +17,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/cart" element={<Cart />} />
+                    <Route path="/pizza/:pizzaId" element={<PizzaInfo />} />
                     <Route path="/not-found" element={<NotFound />} />
                     <Route path="*" element={<Navigate to="/not-found" />} />
                 </Routes>

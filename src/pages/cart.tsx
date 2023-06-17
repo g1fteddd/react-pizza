@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartSelector, clearPizzas } from "../redux/slices/cartSlice";
 import CartEmpty from "../components/cartEmpty";
 
-const Cart = () => {
+const Cart: React.FC = () => {
     const dispatch = useDispatch();
     const { pizzas, totalCount, totalPrice } = useSelector(cartSelector);
 
@@ -94,7 +94,7 @@ const Cart = () => {
                     </div>
                 </div>
                 <div className="content__items">
-                    {pizzas.map((pizza) => (
+                    {pizzas.map((pizza: any) => (
                         <CartPizzaBlock key={pizza.id} {...pizza} />
                     ))}
                 </div>

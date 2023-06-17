@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import { filterSelector, setFilters } from "../redux/slices/filterSlice";
 import { typeSorts } from "../components/sort";
 import { searchSelector } from "../redux/slices/searchSlice";
 
-const Home = () => {
+const Home: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -31,6 +31,7 @@ const Home = () => {
         const searchQuery = searchValue ? `title=${searchValue}` : "";
 
         dispatch(
+            //@ts-ignore
             fetchPizzas({ categoryQuery, sortByWithOrderQury, searchQuery })
         );
     };
@@ -46,7 +47,7 @@ const Home = () => {
             navigate(`?${queryString}`);
         }
         isMounted.current = true;
-    }, [categoryId, sort, searchValue]);
+    }, [categoryId, sort, searchValue, navigate]);
 
     // На первом рендере проверяем search params и сохраняем в Redux
     useEffect(() => {
@@ -64,7 +65,7 @@ const Home = () => {
             );
             isSearch.current = true;
         }
-    }, []);
+    }, [dispatch]);
 
     // При изменении фильтров по новой запрашиваем пиццы
     useEffect(() => {
@@ -88,7 +89,7 @@ const Home = () => {
                 {status === "error" ? (
                     <div className="content__error-info">
                         <h2>
-                            Произошла ошибка <icon>😕</icon>
+                            Произошла ошибка <span>😕</span>
                         </h2>
                         <p>
                             К сожалению, не удалось получить пиццы.
@@ -97,7 +98,7 @@ const Home = () => {
                         </p>
                         <button
                             onClick={() => navigate(0)}
-                            class="button button--black"
+                            className="button button--black"
                         >
                             <span>Обновить страницу</span>
                         </button>
@@ -112,7 +113,7 @@ const Home = () => {
                                 <PizzaBlockSkeleton />
                             </>
                         ) : (
-                            pizzas.map((obj) => (
+                            pizzas.map((obj: any) => (
                                 <PizzaBlock key={obj.id} {...obj} />
                             ))
                         )}

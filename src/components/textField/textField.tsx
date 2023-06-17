@@ -2,7 +2,21 @@ import React from "react";
 
 import styles from "./textField.module.scss";
 
-const TextField = ({ placeholder, type, name, value, onChange }) => {
+interface ITextField {
+    placeholder: string;
+    type: string;
+    name: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const TextField: React.FC<ITextField> = ({
+    placeholder,
+    type,
+    name,
+    value,
+    onChange
+}) => {
     return (
         <input
             value={value}

@@ -5,7 +5,12 @@ import { filterSelector, setSort } from "../redux/slices/filterSlice";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-export const typeSorts = [
+interface ITypeSort {
+    name: string;
+    property: string;
+}
+
+export const typeSorts: ITypeSort[] = [
     { name: "популярности", property: "rating" },
     { name: "цене", property: "price" },
     { name: "алфавиту", property: "title" }
@@ -17,7 +22,7 @@ function Sort() {
     const { sort } = useSelector(filterSelector);
 
     const [open, setOpen] = useState(false);
-    const sortRef = useRef();
+    const sortRef = useRef<HTMLDivElement>(null);
 
     const handleClickOrder = () => {
         dispatch(
@@ -28,14 +33,16 @@ function Sort() {
         );
     };
 
-    const handleClickSort = (sort) => {
+    const handleClickSort = (sort: ITypeSort) => {
         setOpen(false);
         dispatch(setSort({ ...sort, order: "desc" }));
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.composedPath().includes(sortRef.current)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                !event.composedPath().includes(sortRef.current as EventTarget)
+            ) {
                 setOpen(false);
             }
         };

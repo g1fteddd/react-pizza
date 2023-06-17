@@ -12,21 +12,21 @@ import { useState } from "react";
 import { useCallback } from "react";
 import { cartSelector } from "../redux/slices/cartSlice";
 
-function Header() {
-    const [value, setValue] = useState("");
+const Header: React.FC = () => {
+    const [value, setValue] = useState<string>("");
     const dispatch = useDispatch();
     const { totalCount, totalPrice } = useSelector(cartSelector);
 
     const updateSearchValue = useCallback(
-        debounce((str) => {
+        debounce((str: string) => {
             dispatch(setSearchValue(str));
         }, 400),
         []
     );
 
-    const handleChangeInput = (e) => {
-        setValue(e.target.value);
-        updateSearchValue(e.target.value);
+    const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value);
+        updateSearchValue(event.target.value);
     };
 
     return (
@@ -89,6 +89,6 @@ function Header() {
             </div>
         </div>
     );
-}
+};
 
 export default Header;

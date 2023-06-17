@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { filterSelector, setCategoryId } from "../redux/slices/filterSlice";
 
-function Categories() {
+const Categories: React.FC = () => {
     const dispatch = useDispatch();
 
-    const categories = [
+    const categories: string[] = [
         "Все",
         "Мясные",
         "Вегетерианские",
@@ -32,6 +32,6 @@ function Categories() {
             </ul>
         </div>
     );
-}
+};
 
 export default Categories;
