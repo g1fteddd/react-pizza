@@ -1,6 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-const initialState = {
+interface ISort {
+    name: string;
+    property: string;
+    order: string;
+}
+
+interface IFilterState {
+    categoryId: number;
+    sort: ISort;
+}
+
+const initialState: IFilterState = {
     categoryId: 0,
     sort: {
         name: "популярности",
@@ -13,20 +25,20 @@ const filterSlice = createSlice({
     name: "filter",
     initialState,
     reducers: {
-        setCategoryId: (state, action) => {
+        setCategoryId: (state, action: PayloadAction<number>) => {
             state.categoryId = action.payload;
         },
-        setSort: (state, action) => {
+        setSort: (state, action: PayloadAction<ISort>) => {
             state.sort = action.payload;
         },
-        setFilters: (state, action) => {
+        setFilters: (state, action: PayloadAction<IFilterState>) => {
             state.categoryId = Number(action.payload.categoryId);
             state.sort = action.payload.sort;
         }
     }
 });
 
-export const filterSelector = (state) => state.filter;
+export const filterSelector = (state: RootState) => state.filter;
 
 export const { setCategoryId, setSort, setFilters } = filterSlice.actions;
 

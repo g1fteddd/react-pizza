@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPizza, selectCartItemById } from "../../redux/slices/cartSlice";
+import {
+    CartItem,
+    addPizza,
+    selectCartItemById
+} from "../../redux/slices/cartSlice";
 import { Link } from "react-router-dom";
 
 export const typeNames: string[] = ["тонкое", "традиционное"];
@@ -12,6 +16,7 @@ interface IPizzaBlock {
     imageUrl: string;
     sizes: Array<number>;
     types: Array<number>;
+    rating: number;
 }
 
 const PizzaBlock: React.FC<IPizzaBlock> = ({
@@ -28,16 +33,16 @@ const PizzaBlock: React.FC<IPizzaBlock> = ({
     const pizzaItem = useSelector(selectCartItemById(id));
     const pizzaCount = pizzaItem ? pizzaItem.count : 0;
     const addCartPizza = () => {
-        dispatch(
-            addPizza({
-                id,
-                title,
-                price,
-                imageUrl,
-                size: sizes[selectedSize],
-                type: selectedType
-            })
-        );
+        const item: CartItem = {
+            id,
+            title,
+            price,
+            imageUrl,
+            size: sizes[selectedSize],
+            type: selectedType,
+            count: 0
+        };
+        dispatch(addPizza(item));
     };
 
     return (

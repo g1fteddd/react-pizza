@@ -1,9 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { fetchPizzas, pizzasSelector } from "../redux/slices/pizzasSlice";
+import {
+    Status,
+    fetchPizzas,
+    pizzasSelector
+} from "../redux/slices/pizzasSlice";
 
 import Categories from "../components/categories";
 import Sort from "../components/sort";
@@ -12,10 +16,12 @@ import { filterSelector, setFilters } from "../redux/slices/filterSlice";
 
 import { typeSorts } from "../components/sort";
 import { searchSelector } from "../redux/slices/searchSlice";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const { pizzas, status } = useSelector(pizzasSelector);
     const { categoryId, sort } = useSelector(filterSelector);
@@ -31,7 +37,6 @@ const Home: React.FC = () => {
         const searchQuery = searchValue ? `title=${searchValue}` : "";
 
         dispatch(
-            //@ts-ignore
             fetchPizzas({ categoryQuery, sortByWithOrderQury, searchQuery })
         );
     };
@@ -51,19 +56,23 @@ const Home: React.FC = () => {
 
     // На первом рендере проверяем search params и сохраняем в Redux
     useEffect(() => {
-        if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1));
+        const categoryId = searchParams.get("categoryId");
+        const sortProperty = searchParams.get("sortProperty");
+        const order = searchParams.get("order");
 
-            const sort = typeSorts.find(
-                (obj) => obj.property === params.sortProperty
-            );
+        const sort = typeSorts.find((obj) => obj.property === sortProperty);
+
+        if (categoryId && sortProperty && order && sort) {
             dispatch(
                 setFilters({
-                    categoryId: params.categoryId,
-                    sort: { ...sort, order: params.order }
+                    categoryId: Number(categoryId),
+                    sort: { ...sort, order: order }
                 })
             );
+
             isSearch.current = true;
+        } else {
+            navigate("/");
         }
     }, [dispatch]);
 
@@ -105,7 +114,7 @@ const Home: React.FC = () => {
                     </div>
                 ) : (
                     <div className="content__items">
-                        {status === "loading" ? (
+                        {status === Status.LOADING ? (
                             <>
                                 <PizzaBlockSkeleton />
                                 <PizzaBlockSkeleton />

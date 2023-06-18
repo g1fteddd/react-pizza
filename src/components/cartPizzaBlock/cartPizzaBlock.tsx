@@ -2,6 +2,7 @@ import React from "react";
 import { typeNames } from "../pizzaBlock/pizzaBlock";
 import { useDispatch } from "react-redux";
 import {
+    CartItem,
     addPizza,
     deletePizza,
     removePizza
@@ -29,7 +30,7 @@ const CartPizzaBlock: React.FC<ICartPizzaBlock> = ({
     const dispatch = useDispatch();
 
     const handleClickPlus = () => {
-        dispatch(addPizza({ id }));
+        dispatch(addPizza({ id, price } as CartItem));
     };
 
     const handleClickMinus = () => {
