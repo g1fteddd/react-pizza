@@ -1,6 +1,6 @@
 // get data from Local Storage
 
-import { ICartItem } from "../redux/slices/cart/types";
+import { ICartItem } from "../redux/cart/types";
 import { calcTotalCount } from "./calcTotalCount";
 import { calcTotalPrice } from "./calcTotalPrice";
 

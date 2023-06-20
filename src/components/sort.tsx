@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useRef } from "react";
 import { useEffect } from "react";
-import { filterSortSelector } from "../redux/slices/filter/selectors";
-import { setSort } from "../redux/slices/filter/slice";
+import { filterSortSelector } from "../redux/filter/selectors";
+import { setSort } from "../redux/filter/slice";
 
 interface ITypeSort {
     name: string;

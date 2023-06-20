@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getCartFromLS } from "../../../utils/getCartFromLS";
+import { getCartFromLS } from "../../utils/getCartFromLS";
 import { ICartItem, ICartState } from "./types";
 
 const { pizzas, totalPrice, totalCount } = getCartFromLS();
@@ -31,18 +31,6 @@ const cartlSlice = createSlice({
             state.totalPrice += action.payload.price;
             state.totalCount += 1;
         },
-        addPizzaFromLocalStorage: (
-            state,
-            action: PayloadAction<ICartItem[]>
-        ) => {
-            state.pizzas = [...action.payload];
-            state.totalCount = action.payload.reduce((acc, currentValue) => {
-                return acc + currentValue.count;
-            }, 0);
-            state.totalPrice = action.payload.reduce((acc, currentValue) => {
-                return acc + currentValue.price * currentValue.count;
-            }, 0);
-        },
         clearPizzas: (state) => {
             state.pizzas = [];
             state.totalCount = 0;
@@ -69,12 +57,7 @@ const cartlSlice = createSlice({
     }
 });
 
-export const {
-    addPizza,
-    addPizzaFromLocalStorage,
-    clearPizzas,
-    removePizza,
-    deletePizza
-} = cartlSlice.actions;
+export const { addPizza, clearPizzas, removePizza, deletePizza } =
+    cartlSlice.actions;
 
 export default cartlSlice.reducer;

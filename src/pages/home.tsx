@@ -6,12 +6,12 @@ import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
 
-import { searchSelector } from "../redux/slices/search/selectors";
+import { searchSelector } from "../redux/search/selectors";
 import { useAppDispatch } from "../redux/store";
-import { pizzasSelector } from "../redux/slices/pizzas/selectors";
-import { fetchPizzas } from "../redux/slices/pizzas/slice";
-import { Status } from "../redux/slices/pizzas/types";
-import { filterSelector } from "../redux/slices/filter/selectors";
+import { pizzasSelector } from "../redux/pizzas/selectors";
+import { fetchPizzas } from "../redux/pizzas/asyncActions";
+import { Status } from "../redux/pizzas/types";
+import { filterSelector } from "../redux/filter/selectors";
 
 const Home: React.FC = () => {
     const dispatch = useAppDispatch();

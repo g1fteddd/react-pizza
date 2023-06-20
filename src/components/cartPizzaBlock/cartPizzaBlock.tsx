@@ -2,12 +2,8 @@ import React from "react";
 import { typeNames } from "../pizzaBlock/pizzaBlock";
 import { useDispatch } from "react-redux";
 
-import {
-    addPizza,
-    deletePizza,
-    removePizza
-} from "../../redux/slices/cart/slice";
-import { ICartItem } from "../../redux/slices/cart/types";
+import { addPizza, deletePizza, removePizza } from "../../redux/cart/slice";
+import { ICartItem } from "../../redux/cart/types";
 
 interface ICartPizzaBlock {
     id: string;

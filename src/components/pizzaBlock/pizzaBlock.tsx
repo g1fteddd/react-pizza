@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectICartItemById } from "../../redux/slices/cart/selectors";
+import { selectICartItemById } from "../../redux/cart/selectors";
 import { Link } from "react-router-dom";
-import { ICartItem } from "../../redux/slices/cart/types";
-import { addPizza } from "../../redux/slices/cart/slice";
+import { ICartItem } from "../../redux/cart/types";
+import { addPizza } from "../../redux/cart/slice";
 
 export const typeNames: string[] = ["тонкое", "традиционное"];
 
