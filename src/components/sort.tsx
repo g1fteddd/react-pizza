@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterSortSelector, setSort } from "../redux/slices/filterSlice";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { filterSortSelector } from "../redux/slices/filter/selectors";
+import { setSort } from "../redux/slices/filter/slice";
 
 interface ITypeSort {
     name: string;

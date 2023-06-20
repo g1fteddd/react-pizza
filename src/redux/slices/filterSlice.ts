@@ -1,48 +1,37 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+// import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+// import { RootState } from "../store";
 
-interface ISort {
-    name: string;
-    property: string;
-    order: string;
-}
+// const initialState: IFilterState = {
+//     categoryId: 0,
+//     sort: {
+//         name: "популярности",
+//         property: "rating",
+//         order: "desc"
+//     }
+// };
 
-interface IFilterState {
-    categoryId: number;
-    sort: ISort;
-}
+// const filterSlice = createSlice({
+//     name: "filter",
+//     initialState,
+//     reducers: {
+//         setCategoryId: (state, action: PayloadAction<number>) => {
+//             state.categoryId = action.payload;
+//         },
+//         setSort: (state, action: PayloadAction<ISort>) => {
+//             state.sort = action.payload;
+//         },
+//         setFilters: (state, action: PayloadAction<IFilterState>) => {
+//             state.categoryId = Number(action.payload.categoryId);
+//             state.sort = action.payload.sort;
+//         }
+//     }
+// });
 
-const initialState: IFilterState = {
-    categoryId: 0,
-    sort: {
-        name: "популярности",
-        property: "rating",
-        order: "desc"
-    }
-};
+// export const filterSelector = (state: RootState) => state.filter;
+// export const filterCategorySelector = (state: RootState) =>
+//     state.filter.categoryId;
+// export const filterSortSelector = (state: RootState) => state.filter.sort;
 
-const filterSlice = createSlice({
-    name: "filter",
-    initialState,
-    reducers: {
-        setCategoryId: (state, action: PayloadAction<number>) => {
-            state.categoryId = action.payload;
-        },
-        setSort: (state, action: PayloadAction<ISort>) => {
-            state.sort = action.payload;
-        },
-        setFilters: (state, action: PayloadAction<IFilterState>) => {
-            state.categoryId = Number(action.payload.categoryId);
-            state.sort = action.payload.sort;
-        }
-    }
-});
+// export const { setCategoryId, setSort, setFilters } = filterSlice.actions;
 
-export const filterSelector = (state: RootState) => state.filter;
-export const filterCategorySelector = (state: RootState) =>
-    state.filter.categoryId;
-export const filterSortSelector = (state: RootState) => state.filter.sort;
-
-export const { setCategoryId, setSort, setFilters } = filterSlice.actions;
-
-export default filterSlice.reducer;
+// export default filterSlice.reducer;
