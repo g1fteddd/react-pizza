@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterSelector, setSort } from "../redux/slices/filterSlice";
+import { filterSortSelector, setSort } from "../redux/slices/filterSlice";
 import { useRef } from "react";
 import { useEffect } from "react";
 
@@ -16,10 +16,10 @@ export const typeSorts: ITypeSort[] = [
     { name: "алфавиту", property: "title" }
 ];
 
-function Sort() {
+const Sort: React.FC = () => {
     const dispatch = useDispatch();
 
-    const { sort } = useSelector(filterSelector);
+    const sort = useSelector(filterSortSelector);
 
     const [open, setOpen] = useState(false);
     const sortRef = useRef<HTMLDivElement>(null);
@@ -93,6 +93,6 @@ function Sort() {
             )}
         </div>
     );
-}
+};
 
-export default Sort;
+export default React.memo(Sort);

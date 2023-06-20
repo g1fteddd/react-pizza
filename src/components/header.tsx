@@ -1,33 +1,23 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import debounce from "lodash.debounce";
+import { useSelector } from "react-redux";
 
-import { setSearchValue } from "../redux/slices/searchSlice";
-
-import TextField from "./textField";
+import Search from "./Search";
 
 import LogoSvg from "../assets/img/pizza-logo.svg";
-import { useState } from "react";
-import { useCallback } from "react";
-import { cartSelector } from "../redux/slices/cartSlice";
+import { cartSelector } from "../redux/slices/cart/selectors";
 
 const Header: React.FC = () => {
-    const [value, setValue] = useState<string>("");
-    const dispatch = useDispatch();
-    const { totalCount, totalPrice } = useSelector(cartSelector);
+    const { pizzas, totalCount, totalPrice } = useSelector(cartSelector);
+    const isMounted = useRef(false);
 
-    const updateSearchValue = useCallback(
-        debounce((str: string) => {
-            dispatch(setSearchValue(str));
-        }, 400),
-        []
-    );
-
-    const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-        updateSearchValue(event.target.value);
-    };
+    useEffect(() => {
+        if (isMounted.current) {
+            const json = JSON.stringify(pizzas);
+            window.localStorage.setItem("cart", json);
+        }
+        isMounted.current = true;
+    }, [totalCount]);
 
     return (
         <div className="header">
@@ -42,13 +32,7 @@ const Header: React.FC = () => {
                     </div>
                 </Link>
 
-                <TextField
-                    name="search"
-                    placeholder="Поиск пиццы..."
-                    type="text"
-                    value={value}
-                    onChange={handleChangeInput}
-                />
+                <Search />
 
                 <div className="header__cart">
                     <Link to="/cart" className="button button--cart">

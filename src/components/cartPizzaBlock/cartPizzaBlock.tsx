@@ -1,12 +1,13 @@
 import React from "react";
 import { typeNames } from "../pizzaBlock/pizzaBlock";
 import { useDispatch } from "react-redux";
+
 import {
-    CartItem,
     addPizza,
     deletePizza,
     removePizza
-} from "../../redux/slices/cartSlice";
+} from "../../redux/slices/cart/slice";
+import { ICartItem } from "../../redux/slices/cart/types";
 
 interface ICartPizzaBlock {
     id: string;
@@ -30,7 +31,7 @@ const CartPizzaBlock: React.FC<ICartPizzaBlock> = ({
     const dispatch = useDispatch();
 
     const handleClickPlus = () => {
-        dispatch(addPizza({ id, price } as CartItem));
+        dispatch(addPizza({ id, price } as ICartItem));
     };
 
     const handleClickMinus = () => {
