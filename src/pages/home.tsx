@@ -13,7 +13,7 @@ import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
 import { filterSelector } from "../redux/slices/filterSlice";
 
-import { searchSelector } from "../redux/slices/searchSlice";
+import { searchSelector } from "../redux/slices/search/selectors";
 import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {

@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import pizzasReducer from "./slices/pizzasSlice";
 import filterReducer from "./slices/filterSlice";
-import searchReducer from "./slices/searchSlice";
+import searchReducer from "./slices/search/slice";
 import cartReducer from "./slices/cart/slice";
 import { useDispatch } from "react-redux";
 export const store = configureStore({

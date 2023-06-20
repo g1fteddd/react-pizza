@@ -1,9 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-
-interface ISearchState {
-    searchValue: string;
-}
 
 const initialState: ISearchState = {
     searchValue: ""
@@ -18,8 +13,6 @@ const searchSlice = createSlice({
         }
     }
 });
-
-export const searchSelector = (state: RootState) => state.search;
 
 export const { setSearchValue } = searchSlice.actions;
 
