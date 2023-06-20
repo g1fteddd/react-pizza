@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
 import { getCartFromLS } from "../../../utils/getCartFromLS";
 import { ICartItem, ICartState } from "./types";
 

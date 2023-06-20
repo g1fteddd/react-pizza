@@ -2,12 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import {
-    Status,
-    fetchPizzas,
-    pizzasSelector
-} from "../redux/slices/pizzasSlice";
-
 import Categories from "../components/categories";
 import Sort from "../components/sort";
 import PizzaBlock, { PizzaBlockSkeleton } from "../components/pizzaBlock";
@@ -15,6 +9,9 @@ import { filterSelector } from "../redux/slices/filterSlice";
 
 import { searchSelector } from "../redux/slices/search/selectors";
 import { useAppDispatch } from "../redux/store";
+import { pizzasSelector } from "../redux/slices/pizzas/selectors";
+import { fetchPizzas } from "../redux/slices/pizzas/slice";
+import { Status } from "../redux/slices/pizzas/types";
 
 const Home: React.FC = () => {
     const dispatch = useAppDispatch();
