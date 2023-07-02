@@ -15,8 +15,6 @@ const Categories: React.FC = React.memo(() => {
         "Закрытые"
     ];
 
-    console.log("rerender Categories");
-
     const categoryId = useSelector(filterCategorySelector);
 
     return (
